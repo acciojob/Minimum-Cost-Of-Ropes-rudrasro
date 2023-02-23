@@ -21,3 +21,27 @@ function calculateMinCost() {
   // Step 5: Return the total cost
   document.getElementById("result").innerHTML = cost;
 }  
+describe("my form", () => {
+  let form;
+
+  beforeEach(() => {
+    // Check if the form exists
+    form = document.querySelector("form");
+    if (!form) {
+      throw new Error("Form does not exist");
+    }
+  });
+
+  it("should have a submit button", () => {
+    // Test if the form has a submit button
+    const submitButton = form.querySelector('button[type="submit"]');
+    expect(submitButton).toBeTruthy();
+  });
+
+  it("should have at least one input field", () => {
+    // Test if the form has at least one input field
+    const inputFields = form.querySelectorAll('input[type="text"]');
+    expect(inputFields.length).toBeGreaterThan(0);
+  });
+});
+
