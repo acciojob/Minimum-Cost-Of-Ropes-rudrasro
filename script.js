@@ -1,35 +1,23 @@
-const val = document.querySelector('#rope-lengths');
-const result = document.getElementById("result")
- 
 function calculateMinCost() {
-	const arr = (val.value).split(", ").map((e) => parseInt(e));
-	const n = arr.length
-	 let pq = [];
-   
-        // Adding items to the pQueue
-        for (let i = 0; i < n; i++) {
-            pq.push(arr[i]);
-        }   
-           
-        pq.sort(function(a,b){return a-b;});
-         
-        // Initialize result
-        let res = 0;
-   
-        // While size of priority queue
-        // is more than 1
-        while (pq.length > 1) {
-            // Extract shortest two ropes from pq
-            let first = pq.shift();
-            let second = pq.shift();
-   
-            // Connect the ropes: update result
-            // and insert the new rope to pq
-            res += first + second;
-            pq.push(first + second);
-            pq.sort(function(a,b){return a-b;});
-        }
+  //your code here
+	const input = document.getElementById("input").value;
+  const ropes = input.split(",").map(Number);
   
-        return res;
-        result.innerText = res;
-}
+  // Step 1: Sort the ropes in increasing order of length
+  ropes.sort((a, b) => a - b);
+  
+  let cost = 0;
+  
+  // Step 2-4: Merge ropes until only one is left
+  while (ropes.length > 1) {
+    const rope1 = ropes.shift();
+    const rope2 = ropes.shift();
+    const mergedRope = rope1 + rope2;
+    cost += mergedRope;
+    ropes.push(mergedRope);
+    ropes.sort((a, b) => a - b);
+  }
+  
+  // Step 5: Return the total cost
+  document.getElementById("result").innerHTML = cost;
+}  
