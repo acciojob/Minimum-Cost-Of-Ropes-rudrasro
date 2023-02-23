@@ -1,47 +1,46 @@
 function calculateMinCost() {
-  //your code here
-	const input = document.getElementById("input").value;
-  const ropes = input.split(",").map(Number);
-  
-  // Step 1: Sort the ropes in increasing order of length
-  ropes.sort((a, b) => a - b);
-  
-  let cost = 0;
-  
-  // Step 2-4: Merge ropes until only one is left
-  while (ropes.length > 1) {
-    const rope1 = ropes.shift();
-    const rope2 = ropes.shift();
-    const mergedRope = rope1 + rope2;
-    cost += mergedRope;
-    ropes.push(mergedRope);
-    ropes.sort((a, b) => a - b);
+  // Check if the form exists
+  const form = document.querySelector("form");
+  if (!form) {
+    throw new Error("Form does not exist");
   }
-  
-  // Step 5: Return the total cost
-  document.getElementById("result").innerHTML = cost;
-}  
-describe("my form", () => {
-  let form;
 
-  beforeEach(() => {
-    // Check if the form exists
-    form = document.querySelector("form");
-    if (!form) {
-      throw new Error("Form does not exist");
-    }
+  // Get the input value and parse it as an array of integers
+  const arr = form.elements["rope-lengths"].value
+    .split(", ")
+    .map((e) => parseInt(e));
+
+  const n = arr.length;
+  let pq = [];
+
+  // Adding items to the pQueue
+  for (let i = 0; i < n; i++) {
+    pq.push(arr[i]);
+  }
+
+  pq.sort(function (a, b) {
+    return a - b;
   });
 
-  it("should have a submit button", () => {
-    // Test if the form has a submit button
-    const submitButton = form.querySelector('button[type="submit"]');
-    expect(submitButton).toBeTruthy();
-  });
+  // Initialize result
+  let res = 0;
 
-  it("should have at least one input field", () => {
-    // Test if the form has at least one input field
-    const inputFields = form.querySelectorAll('input[type="text"]');
-    expect(inputFields.length).toBeGreaterThan(0);
-  });
-});
+  // While size of priority queue is more than 1
+  while (pq.length > 1) {
+    // Extract shortest two ropes from pq
+    let first = pq.shift();
+    let second = pq.shift();
 
+    // Connect the ropes: update result
+    // and insert the new rope to pq
+    res += first + second;
+    pq.push(first + second);
+    pq.sort(function (a, b) {
+      return a - b;
+    });
+  }
+
+  // Set the result text in the HTML element with ID "result"
+  const result = document.getElementById("result");
+  result.innerText = res;
+}
